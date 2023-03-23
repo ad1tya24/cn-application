@@ -20,4 +20,11 @@ The application will allow for transfer of data:
 1. socket
 
 
+---
 
+## Improvement Features
+
+> Don't disclose this, these are our USPs.
+
+- [ ] Encryption
+- [ ] File Backup
