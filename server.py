@@ -1,7 +1,7 @@
 # Server Main Program
-from server_side import server_main
+from server_side import receive_file
 
 
 if __name__ == "__main__" :
-    server_main()
+    receive_file()
 

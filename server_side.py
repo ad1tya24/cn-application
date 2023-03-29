@@ -12,7 +12,7 @@ def store_file (filename, data) :
     file.close()
 
 
-def server_main () :
+def receive_file () :
     IP = gethostbyname(gethostname())
     PORT = get_server_port()
     FORMAT = get_format()
@@ -30,6 +30,7 @@ def server_main () :
     server.listen()
     print("Server is LISTENING")
 
+    print()
 
     while True :
         connection_socket, client_addr = server.accept()
@@ -47,9 +48,8 @@ def server_main () :
 
         store_file(filename, data)
 
-
         connection_socket.close()
         print("CONNECTION: " + str(client_addr[0] )+ " DISCONNECTED")
-        quit()
+        print("+==============+==============+")
 
         
