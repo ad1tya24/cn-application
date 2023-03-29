@@ -28,3 +28,18 @@ The application will allow for transfer of data:
 
 - [ ] Encryption
 - [ ] File Backup
+
+
+---
+
+## Execution 
+
+Open this in one terminal
+```bash
+python3 server.py
+```
+
+Open this in another terminal
+```bash
+python3 client.py
+```
