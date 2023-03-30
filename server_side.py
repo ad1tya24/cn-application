@@ -1,10 +1,10 @@
-# Server Side
 from socket import *
 from constants import *
+import os
 
 
-def store_file (filename, data) :
-    absolute_path = "Server_Data/" + filename + ".txt"
+def store_file (folder, filename, data) :
+    absolute_path = os.getcwd() + "/" + folder + "/" + filename 
     file = open(absolute_path, "w")
 
     file.write(data);
@@ -36,7 +36,11 @@ def receive_file () :
         connection_socket, client_addr = server.accept()
         print("NEW CONNECTION: " + str(client_addr[0] )+ " CONNECTED")
 
+        folder = connection_socket.recv(SIZE).decode(FORMAT)
+        print("Folder was RECEIVED: ", folder)
+
         filename = connection_socket.recv(SIZE).decode(FORMAT)
+        print("Filename was RECEIVED: ", filename)
 
         # Error: Crashes when there are multiple files
         print("File was RECEIVED")
@@ -46,7 +50,7 @@ def receive_file () :
         print("Content was RECEIVED\n",data)
         connection_socket.send("File Data was RECEIVED.".encode(FORMAT))
 
-        store_file(filename, data)
+        store_file(folder, filename, data)
 
         connection_socket.close()
         print("CONNECTION: " + str(client_addr[0] )+ " DISCONNECTED")

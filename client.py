@@ -1,5 +1,6 @@
 # Client Main Program
 from client_side import send_file
+import os
 
 if __name__ == "__main__" :
     # client_main()
@@ -10,11 +11,37 @@ if __name__ == "__main__" :
     print("Press Enter to exit file transfer")
 
     while True :
-        filename = input("Enter the name of the file :")
-        # file_exist = does_file_exist()
+        folder=input("Enter the folder name: ")
+        dir_list = os.listdir(os.getcwd() + "/" + folder)
+        print("Files and directories in '", folder, "' :")
+        print(dir_list)
 
-        if (filename != "") :
-            send_file(filename)
+        user_filename=input("Enter the file name: ")
+        
+        def find_file(filename, search_path):
+            for root, dir, files in os.walk(search_path):
+                for file in files:
+                    if file.startswith(filename):
+                        return os.path.join(root, file)
+            return None
+        result = find_file(user_filename, os.getcwd() + "/" + folder)
+        if result:
+            print(f"Found {result}")
+        else:
+            print(f"{user_filename} not found")
+
+        nope, file_extension = os.path.splitext(result)
+        
+        # file_exist = does_file_exist()
+        print(folder)
+        print(user_filename)
+        print(file_extension)
+
+        dest_folder=input("Enter the file destination folder: ")
+        print(dest_folder)
+
+        if (user_filename != "") :
+            send_file(folder, user_filename, file_extension, dest_folder)
         else :
             quit()
 
