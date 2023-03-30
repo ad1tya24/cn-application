@@ -1,18 +1,23 @@
 from socket import *
 from constants import *
 import os
+from cryptography.fernet import Fernet
 
 
-def store_file (folder, filename, data) :
+def store_file(folder, filename, data) :
     absolute_path = os.getcwd() + "/" + folder + "/" + filename 
     file = open(absolute_path, "w")
-
-    file.write(data);
-
+    file.write(data)
     file.close()
 
 
-def receive_file () :
+def decrypt_data(key, data):
+    f = Fernet(key)
+    decrypted_data = f.decrypt(data)
+    return decrypted_data.decode()
+
+
+def receive_file() :
     IP = gethostbyname(gethostname())
     PORT = get_server_port()
     FORMAT = get_format()
@@ -46,8 +51,18 @@ def receive_file () :
         print("File was RECEIVED")
         connection_socket.send("File was RECEIVED.".encode(FORMAT))
 
+        key = connection_socket.recv(SIZE)
+        data = connection_socket.recv(SIZE)
+
+        print("Encrypted Key: ", key)
+        print("Encrypted Data: ", data)
+
+        decrypted_data = decrypt_data(key, data)
+
+        print("Content was RECEIVED\n", decrypted_data)
+
         data = connection_socket.recv(SIZE).decode(FORMAT)
-        print("Content was RECEIVED\n",data)
+
         connection_socket.send("File Data was RECEIVED.".encode(FORMAT))
 
         store_file(folder, filename, data)
