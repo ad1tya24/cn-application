@@ -13,8 +13,10 @@ if __name__ == "__main__" :
     while True :
         folder=input("Enter the folder name: ")
         dir_list = os.listdir(os.getcwd() + "/" + folder)
-        print("Files and directories in '", folder, "' :")
-        print(dir_list)
+        print("Files and directories in '" + str(folder) + "' :")
+
+        for file in dir_list :
+            print(file)
 
         user_filename=input("Enter the file name: ")
         
@@ -33,15 +35,15 @@ if __name__ == "__main__" :
         nope, file_extension = os.path.splitext(result)
         
         # file_exist = does_file_exist()
-        print(folder)
-        print(user_filename)
-        print(file_extension)
+        # print(folder)
+        # print(user_filename)
+        # print(file_extension)
 
         dest_folder=input("Enter the file destination folder: ")
-        print(dest_folder)
 
         if (user_filename != "") :
             send_file(folder, user_filename, file_extension, dest_folder)
+            print("File sent to", dest_folder)
         else :
             quit()
 

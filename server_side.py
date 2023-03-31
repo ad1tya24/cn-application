@@ -1,18 +1,23 @@
 from socket import *
 from constants import *
 import os
+from cryptography.fernet import Fernet
 
 
-def store_file (folder, filename, data) :
+def store_file(folder, filename, data) :
     absolute_path = os.getcwd() + "/" + folder + "/" + filename 
     file = open(absolute_path, "w")
-
     file.write(data);
-
     file.close()
 
 
-def receive_file () :
+def decrypt_data(key, data) :
+    f = Fernet(key)
+    decrypted_data = f.decrypt(data)
+    return decrypted_data.decode()
+
+
+def receive_file() :
     IP = gethostbyname(gethostname())
     PORT = get_server_port()
     FORMAT = get_format()
@@ -36,24 +41,36 @@ def receive_file () :
         connection_socket, client_addr = server.accept()
         print("NEW CONNECTION: " + str(client_addr[0] )+ " CONNECTED")
 
-        folder = connection_socket.recv(SIZE).decode(FORMAT)
-        print("Folder was RECEIVED: ", folder)
+        # folder = connection_socket.recv(SIZE).decode(FORMAT)
 
-        filename = connection_socket.recv(SIZE).decode(FORMAT)
+        # filename = connection_socket.recv(SIZE).decode(FORMAT)
+        folder_and_filename = connection_socket.recv(SIZE).decode(FORMAT)
+        folder, filename = folder_and_filename.split(',')
+
+        print("Folder was RECEIVED: ", folder)
         print("Filename was RECEIVED: ", filename)
 
         # Error: Crashes when there are multiple files
-        print("File was RECEIVED")
-        connection_socket.send("File was RECEIVED.".encode(FORMAT))
+        # print("File was RECEIVED")
+        connection_socket.send("File and Folder RECEIVED.".encode(FORMAT))
+
+        key_and_data = connection_socket.recv(SIZE)
+        key, data = key_and_data.split(b',')
+        # data = connection_socket.recv(SIZE)
+
+        print("Encrypted Key: ", key)
+        print("Encrypted Data: ", data)
+
+        decrypted_data = decrypt_data(key, data)
+
+        print("Content was RECEIVED: \n", decrypted_data)
 
         data = connection_socket.recv(SIZE).decode(FORMAT)
-        print("Content was RECEIVED\n",data)
+
         connection_socket.send("File Data was RECEIVED.".encode(FORMAT))
 
         store_file(folder, filename, data)
 
         connection_socket.close()
-        print("CONNECTION: " + str(client_addr[0] )+ " DISCONNECTED")
+        print("CONNECTION: " + str(client_addr[0])+ " DISCONNECTED")
         print("+==============+==============+")
-
-        
