@@ -12,7 +12,7 @@ def get_format () :
     return (FORMAT)
 
 def get_size () :
-    SIZE = 1024
+    SIZE = 4096
     return (SIZE)
 
 def get_client_folder () :

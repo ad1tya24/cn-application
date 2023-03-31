@@ -33,9 +33,11 @@ def send_file (folder, filename, file_extension, dest_folder) :
     print("Absolute Path: ",absolute_filepath)
 
     data = read_file(absolute_filepath)
-    client.send(dest_folder.encode(FORMAT))
-    client.send(filename.encode(FORMAT))
+    # client.send(dest_folder.encode(FORMAT))
+    # client.send(filename.encode(FORMAT))
     #client.send(file_extension.encode(FORMAT))
+    client.send((dest_folder + ',' + filename).encode(FORMAT))
+
     
     recv_file_msg = client.recv(SIZE).decode(FORMAT)
     print("From SERVER: ", recv_file_msg)

@@ -36,15 +36,18 @@ def receive_file () :
         connection_socket, client_addr = server.accept()
         print("NEW CONNECTION: " + str(client_addr[0] )+ " CONNECTED")
 
-        folder = connection_socket.recv(SIZE).decode(FORMAT)
-        print("Folder was RECEIVED: ", folder)
+        # folder = connection_socket.recv(SIZE).decode(FORMAT)
 
-        filename = connection_socket.recv(SIZE).decode(FORMAT)
+        # filename = connection_socket.recv(SIZE).decode(FORMAT)
+        folder_and_filename = connection_socket.recv(SIZE).decode(FORMAT)
+        folder, filename = folder_and_filename.split(',')
+
+        print("Folder was RECEIVED: ", folder)
         print("Filename was RECEIVED: ", filename)
 
         # Error: Crashes when there are multiple files
         print("File was RECEIVED")
-        connection_socket.send("File was RECEIVED.".encode(FORMAT))
+        connection_socket.send("File and Folder RECEIVED.".encode(FORMAT))
 
         data = connection_socket.recv(SIZE).decode(FORMAT)
         print("Content was RECEIVED\n",data)
