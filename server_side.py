@@ -51,7 +51,7 @@ def receive_file() :
         print("Filename was RECEIVED: ", filename)
 
         # Error: Crashes when there are multiple files
-        print("File was RECEIVED")
+        # print("File was RECEIVED")
         connection_socket.send("File and Folder RECEIVED.".encode(FORMAT))
 
         key_and_data = connection_socket.recv(SIZE)
@@ -63,7 +63,7 @@ def receive_file() :
 
         decrypted_data = decrypt_data(key, data)
 
-        print("Content was RECEIVED\n", decrypted_data)
+        print("Content was RECEIVED: \n", decrypted_data)
 
         data = connection_socket.recv(SIZE).decode(FORMAT)
 
@@ -72,5 +72,5 @@ def receive_file() :
         store_file(folder, filename, data)
 
         connection_socket.close()
-        print("CONNECTION: " + str(client_addr[0] )+ " DISCONNECTED")
+        print("CONNECTION: " + str(client_addr[0])+ " DISCONNECTED")
         print("+==============+==============+")
